@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
+//import { decrement, increment } from "./redux/slices/counterSlice";
+import { Header } from "./components";
+import HomePage from "./pages/Home";
+import NotFoundPage from "./pages/NotFound";
+import Cart from "./pages/Cart";
+
+import { Routes, Route } from "react-router-dom";
+
+export const SearchContext = React.createContext();
 function App() {
+  const [_Search, _setSearch] = React.useState("");
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="wrapper">
+      <SearchContext.Provider value={{ _Search, _setSearch }}>
+        <Header />
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
+      </SearchContext.Provider>
     </div>
   );
 }
