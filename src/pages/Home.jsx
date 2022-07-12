@@ -79,7 +79,9 @@ const Home = () => {
         categoryId,
         sortProperty: sort.sortProperty,
       });
+
       navigate(`?${queryString}`);
+      
       if (categoryId === 0 && currentPage === 1) {
         navigate(`/`);
       }
