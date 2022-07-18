@@ -1,28 +1,27 @@
 import React from "react";
 import qs from "qs";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { SearchContext } from "../App";
 import { Catigories, SortPopUp, Skeleton, PizzaBlock } from "../components";
 import Pagination from "../Pagination";
 import {
+  selectFilter,
   setCategoryId,
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
 
 import { _options } from "../components/Sort";
-import { FetchPizzas } from "../redux/slices/pizzaSlice";
+import { FetchPizzas, selectPizzasData } from "../redux/slices/pizzaSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const { items, status } = useSelector((state) => state.pizza);
-  const { categoryId, sort, currentPage } = useSelector(
-    (state) => state.filter
-  );
+  const { items, status } = useSelector(selectPizzasData);
+  const { categoryId, sort, currentPage } = useSelector(selectFilter);
 
   const { _Search } = React.useContext(SearchContext);
 
@@ -100,7 +99,7 @@ const Home = () => {
       }
       return false;
     })
-    .map((_item) => <PizzaBlock key={_item.id} {..._item} />);
+    .map((_item) => <Link key={_item.id} to={`/pizza/${_item.id}`}><PizzaBlock  {..._item} /></Link>);
 
   return (
     <div className="container">
