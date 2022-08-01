@@ -1,27 +1,43 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addItem, selectCartItemById } from "../../redux/slices/cartSlice";
+import { addItem, CartItem, selectCartItemById } from "../../redux/slices/cartSlice";
+import { Link } from "react-router-dom";
+const typeNames = ["Тонке", "Традиційне"];
 
-const _typeNames = ["Тонке", "Традиційне"];
+type PizzaBlockProps = {
+  imageUrl: string;
+  name: string;
+  types: number[];
+  sizes: number[];
+  price: number;
+  id: string;
+};
 
-function PizzaBlock({ imageUrl, name, types, sizes, price, id }) {
-  
-  const [_ActiveType, _SetActiveType] = React.useState(0);
-  const [_ActiveSize, _SetActiveSize] = React.useState(0);
-  
-  const cartItem = useSelector(selectCartItemById(id) )
-  
-  const addedCount = cartItem ? cartItem.count : 0 ;
+const PizzaBlock: React.FC<PizzaBlockProps> = ({
+  imageUrl,
+  name,
+  types,
+  sizes,
+  price,
+  id,
+}) => {
+  const [ActiveType, SetActiveType] = React.useState(0);
+  const [ActiveSize, SetActiveSize] = React.useState(0);
+
+  const cartItem = useSelector(selectCartItemById(id));
+
+  const addedCount = cartItem ? cartItem.count : 0;
 
   const dispatch = useDispatch();
   const onClickAdd = () => {
-    const item = {
+    const item: CartItem = {
       id,
       name,
       price,
       imageUrl,
-      type: _typeNames[_ActiveType],
-      size: sizes[_ActiveSize],
+      type: typeNames[ActiveType],
+      size: sizes[ActiveSize],
+      count: 0,
     };
     dispatch(addItem(item));
   };
@@ -29,28 +45,30 @@ function PizzaBlock({ imageUrl, name, types, sizes, price, id }) {
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
+      <Link key={id} to={`/pizza/${id}`}>
         <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
         <h4 className="pizza-block__title">{name}</h4>
+        </Link>
         <div className="pizza-block__selector">
           <ul>
-            {types.map((_type) => (
+            {types.map((type) => (
               <li
-                onClick={() => _SetActiveType(_type)}
-                key={`${id}_${_type}`}
-                className={_ActiveType === _type ? "active" : ""}
+                onClick={() => SetActiveType(type)}
+                key={`${id}_${type}`}
+                className={ActiveType === type ? "active" : ""}
               >
-                {_typeNames[_type]}
+                {typeNames[type]}
               </li>
             ))}
           </ul>
           <ul>
-            {sizes.map((_size, _index) => (
+            {sizes.map((size, index) => (
               <li
-                onClick={() => _SetActiveSize(_index)}
-                key={`${_size}_${_index}`}
-                className={_ActiveSize === _index ? "active" : ""}
+                onClick={() => SetActiveSize(index)}
+                key={`${size}_${index}`}
+                className={ActiveSize === index ? "active" : ""}
               >
-                {_size} см.
+                {size} см.
               </li>
             ))}
           </ul>
@@ -80,5 +98,5 @@ function PizzaBlock({ imageUrl, name, types, sizes, price, id }) {
       </div>
     </div>
   );
-}
+};
 export default PizzaBlock;

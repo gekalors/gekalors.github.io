@@ -1,6 +1,11 @@
 import React from "react";
 import classNames from "classnames";
-function AddToBin({ onClick, className, children }) {
+type BinBtnProps = {
+  onClick: ()=>void;
+  className: string;
+  children: any;
+}
+const AddToBin: React.FC<BinBtnProps> = ({ onClick, className, children }) =>{
   return (
     <button onClick = {onClick} className={classNames("button", className)}>{children}</button>
   );

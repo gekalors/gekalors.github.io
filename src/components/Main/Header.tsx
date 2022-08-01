@@ -1,22 +1,22 @@
 import React from "react";
-import Bin from "./Bin";
-import _logo from "../assets/img/pizza-logo.svg";
+import Bin from "../BinC/Bin";
+import logo from "../../assets/img/pizza-logo.svg";
 import { Link, useLocation } from "react-router-dom";
-import Search from "../Search";
+import Search from "../../Search";
 import { useSelector } from "react-redux";
-import { selectCart } from "../redux/slices/cartSlice";
+import { selectCart } from "../../redux/slices/cartSlice";
 
 function Header() {
   const { items, totalPrice } = useSelector(selectCart);
   const location = useLocation();
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
 
   return (
     <div className="header">
       <div className="container">
         <Link to="/">
           <div className="header__logo">
-            <img width="38" src={_logo} alt="Pizza logo" />
+            <img width="38" src={logo} alt="Pizza logo" />
             <div>
               <h1>React Pizza</h1>
               <p>найсмачніша піца тільки тут</p>
