@@ -1,31 +1,25 @@
 import React from "react";
-import qs from "qs";
-import { Link, useNavigate } from "react-router-dom";
+
+// import qs from "qs";
+
+// import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Catigories, SortPopUp, Skeleton, PizzaBlock } from "../components";
-/* import {FilterState} from '../redux/slices/filterSlice' */
 import Pagination from "../Pagination";
+import {setCategoryId,setCurrentPage} from "../redux/filter/slice";
 
-import {
-  selectFilter,
-  setCategoryId,
-  setCurrentPage,
-  setFilters,
-} from "../redux/slices/filterSlice";
+// import { options } from "../components/Main/Sort";
 
-import { options } from "../components/Main/Sort";
-import {
-  FetchPizzas,
-  SearchPizzaParams,
-  selectPizzasData,
-} from "../redux/slices/pizzaSlice";
+import {FetchPizzas} from "../redux/pizza/asyncActions";
 import { useAppDispatch } from "../redux/store";
+import { selectFilter } from "../redux/filter/selectors";
+import { selectPizzasData } from "../redux/pizza/selectors";
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+ // const navigate = useNavigate();
   const isSearch = React.useRef(false);
-  const isMounted = React.useRef(false);
+ // const isMounted = React.useRef(false);
   const { items, status } = useSelector(selectPizzasData);
   const { categoryId, sort, currentPage, searchValue } =
     useSelector(selectFilter);
@@ -108,7 +102,7 @@ const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Catigories value={categoryId} setCategory={setCategory} />
-        <SortPopUp />
+        <SortPopUp sort={sort}/>
       </div>
       <h2 className="content__title">Усі піци</h2>
       {status === "error" ? (

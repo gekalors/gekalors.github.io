@@ -1,10 +1,16 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { selectSort, setSort, SortPropertyEnum } from "../../redux/slices/filterSlice";
+import { useDispatch } from "react-redux";
+import { setSort } from "../../redux/filter/slice";
+import { Sort, SortPropertyEnum } from "../../redux/filter/types";
+
 
 type OptionsItem = {
   name: string;
   sortProperty: SortPropertyEnum;
+};
+
+type SortPopupProps = {
+  sort: Sort;
 };
 
 export const options: OptionsItem[] = [
@@ -16,9 +22,8 @@ export const options: OptionsItem[] = [
   { name: "абеткою(ASC)", sortProperty: SortPropertyEnum.TITLE_ASC },
 ];
 
-function SortPopup() {
+const SortPopup: React.FC<SortPopupProps> = ({ sort }) => {
   const dispatch = useDispatch();
-  const sort = useSelector(selectSort);
   const sortRef = React.useRef<HTMLDivElement>(null);
 
   const [Open, makeOpen] = React.useState(false);
@@ -27,6 +32,7 @@ function SortPopup() {
     dispatch(setSort(obj));
     makeOpen(false);
   };
+
 
   type PopupClick = MouseEvent & {
     path: Node[];
@@ -80,5 +86,5 @@ function SortPopup() {
       )}
     </div>
   );
-}
+};
 export default SortPopup;
